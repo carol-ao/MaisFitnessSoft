@@ -9,7 +9,9 @@ import com.basic.maisFitness.requests.ClientPutRequestBody;
 import com.basic.maisFitness.services.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Service
@@ -18,6 +20,7 @@ public class ClientService {
 @Autowired
     private ClientRepository clientRepository;
 
+    @Transactional
     public Client save(ClientPostRequestBody clientPostRequestBody) {
         return clientRepository.save(ClientMappers.INSTANCE.toClient(clientPostRequestBody));
     }
@@ -30,12 +33,13 @@ public class ClientService {
         return clientRepository.findAll();
 
     }
-
+    @Transactional
     public void delete(Long id) {
         Client client = findById(id);
         clientRepository.delete(client);
     }
 
+    @Transactional
     public Client replace(ClientPutRequestBody clientPutRequestBody) {
         Client client = ClientMappers.INSTANCE.toClient(clientPutRequestBody);
         delete(client.getId());

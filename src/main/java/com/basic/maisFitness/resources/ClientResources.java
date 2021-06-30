@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -22,7 +23,7 @@ public class ClientResources {
     private ClientService clientService;
 
     @PostMapping
-    public ResponseEntity<Client> save(@RequestBody ClientPostRequestBody clientPostRequestBody){
+    public ResponseEntity<Client> save(@RequestBody @Valid ClientPostRequestBody clientPostRequestBody){
         return new ResponseEntity<>(clientService.save(clientPostRequestBody), HttpStatus.CREATED);
 }
 
@@ -43,7 +44,7 @@ public class ClientResources {
     }
 
     @PutMapping
-    public ResponseEntity<Client> replace(@RequestBody ClientPutRequestBody clientPutRequestBody) {
+    public ResponseEntity<Client> replace(@RequestBody @Valid ClientPutRequestBody clientPutRequestBody) {
         return new ResponseEntity<>(clientService.replace(clientPutRequestBody),HttpStatus.ACCEPTED);
     }
 
