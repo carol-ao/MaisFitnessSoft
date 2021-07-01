@@ -1,10 +1,8 @@
 package com.basic.maisFitness.resources;
 
 
-import com.basic.maisFitness.domain.Client;
 import com.basic.maisFitness.domain.Order;
-import com.basic.maisFitness.mapper.OrderMappers;
-import com.basic.maisFitness.requests.ClientPutRequestBody;
+import com.basic.maisFitness.mapper.OrderRelatedMappers;
 import com.basic.maisFitness.requests.OrderPostRequestBody;
 import com.basic.maisFitness.services.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -22,7 +19,7 @@ public class OrderResources {
     @Autowired
     OrderService orderService;
     @Autowired
-    OrderMappers orderMappers;
+    OrderRelatedMappers orderRelatedMappers;
 
     @GetMapping
     ResponseEntity<List<Order>> findAll(){

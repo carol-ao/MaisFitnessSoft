@@ -36,19 +36,5 @@ public class Client {
     private void autoRegistrationDate() {
         registrationDate = LocalDate.now();
     }
-/*
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Client client = (Client) o;
-        return id.equals(client.id);
-    }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
-
- */
 }

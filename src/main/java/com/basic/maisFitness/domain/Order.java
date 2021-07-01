@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -33,11 +32,11 @@ public class Order {
     @JoinColumn(name = "client_id")
     private Client client;
 
+    @OneToMany(mappedBy = "id.order")
+    private Set<OrderItem> orderItems = new HashSet<>();
+
     @PrePersist
     private void autoRegistrationDate() {
         registrationDate = LocalDateTime.now();
     }
-
-//    @OneToMany(mappedBy = "id.sale")
-//    private Set<SaleItem> saleItems = new HashSet<>();
 }

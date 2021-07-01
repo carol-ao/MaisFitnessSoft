@@ -1,7 +1,7 @@
 package com.basic.maisFitness.services;
 
 import com.basic.maisFitness.domain.Order;
-import com.basic.maisFitness.mapper.OrderMappers;
+import com.basic.maisFitness.mapper.OrderRelatedMappers;
 import com.basic.maisFitness.repositories.OrderRepository;
 import com.basic.maisFitness.requests.OrderPostRequestBody;
 import com.basic.maisFitness.services.exceptions.ResourceNotFoundException;
@@ -19,11 +19,11 @@ public class OrderService {
     private OrderRepository orderRepository;
 
     @Autowired
-    private OrderMappers orderMappers;
+    private OrderRelatedMappers orderRelatedMappers;
 
     @Transactional
     public Order save(OrderPostRequestBody orderPostRequestBody) {
-        return orderRepository.save(orderMappers.toOrder(orderPostRequestBody));
+        return orderRepository.save(orderRelatedMappers.toOrder(orderPostRequestBody));
     }
 
     public Order findById(long id){
@@ -49,7 +49,7 @@ public class OrderService {
     /*
     @Transactional // VER EXCEPTION DEPOIS
     public Order replace(OrderPutRequestBody OrderPutRequestBody) {
-        Order Order = OrderMappers.INSTANCE.toOrder(OrderPutRequestBody);
+        Order Order = OrderRelatedMappers.INSTANCE.toOrder(OrderPutRequestBody);
         delete(Order.getId());
         return OrderRepository.save(Order);
     }

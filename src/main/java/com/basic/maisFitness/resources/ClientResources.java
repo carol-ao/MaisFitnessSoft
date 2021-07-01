@@ -1,6 +1,7 @@
 package com.basic.maisFitness.resources;
 
 import com.basic.maisFitness.domain.Client;
+import com.basic.maisFitness.domain.Order;
 import com.basic.maisFitness.enums.PaymentMethodEnum;
 import com.basic.maisFitness.enums.ProductSizeEnum;
 import com.basic.maisFitness.requests.ClientPostRequestBody;
