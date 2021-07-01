@@ -26,7 +26,6 @@ public class ClientResources {
     public ResponseEntity<Client> save(@RequestBody @Valid ClientPostRequestBody clientPostRequestBody){
         return new ResponseEntity<>(clientService.save(clientPostRequestBody), HttpStatus.CREATED);
 }
-
     @GetMapping
     public ResponseEntity<List<Client>> findAll() {
         return ResponseEntity.ok().body(clientService.findAll());

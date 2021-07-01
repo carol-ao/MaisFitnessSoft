@@ -8,6 +8,7 @@ import com.basic.maisFitness.requests.ClientPostRequestBody;
 import com.basic.maisFitness.requests.ClientPutRequestBody;
 import com.basic.maisFitness.services.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,11 +36,17 @@ public class ClientService {
     }
     @Transactional
     public void delete(Long id) {
+
         Client client = findById(id);
-        clientRepository.delete(client);
+        try{
+            clientRepository.delete(client);
+        }catch(EmptyResultDataAccessException emptyResultDataAccessException){
+            throw new ResourceNotFoundException("cliente", id);
+        }
+
     }
 
-    @Transactional
+    @Transactional // VER EXCEPTION DEPOIS
     public Client replace(ClientPutRequestBody clientPutRequestBody) {
         Client client = ClientMappers.INSTANCE.toClient(clientPutRequestBody);
         delete(client.getId());

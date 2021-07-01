@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 
@@ -27,6 +29,8 @@ public class Client {
     private ProductSizeEnum hips;
     private LocalDate registrationDate;
 
+//    @OneToMany(mappedBy = "client_id")
+//    List<Order> orders = new ArrayList<>();
 
     @PrePersist
     private void autoRegistrationDate() {
