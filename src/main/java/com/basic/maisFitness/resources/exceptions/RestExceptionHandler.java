@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
@@ -13,21 +14,20 @@ import java.time.LocalDateTime;
 @ControllerAdvice
 public class RestExceptionHandler {
     @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<StandardError> resourceNotFound(ResourceNotFoundException resourceNotFoundException, HttpServletRequest httpServletRequest){
+    public ResponseEntity<StandardError> resourceNotFound(Exception e, HttpServletRequest httpServletRequest){
         return  ResponseEntity.status(HttpStatus.NOT_FOUND).body(StandardError.builder()
                 .timestamp(LocalDateTime.now())
                 .status(HttpStatus.NOT_FOUND.value())
-                .error("Resource not Found")
-                .message(resourceNotFoundException.getMessage())
+                .message(e.getMessage())
                 .path(httpServletRequest.getRequestURI()).build());
     }
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<StandardError> methodNotValid(MethodArgumentNotValidException methodArgumentNotValidException, HttpServletRequest httpServletRequest){
+    @ExceptionHandler({MethodArgumentNotValidException.class,
+                        MethodArgumentTypeMismatchException.class})
+    public ResponseEntity<StandardError> methodNotValid(Exception e, HttpServletRequest httpServletRequest){
         return  ResponseEntity.status(HttpStatus.BAD_REQUEST).body(StandardError.builder()
                 .timestamp(LocalDateTime.now())
                 .status(HttpStatus.BAD_REQUEST.value())
-                .error("Invalid field input. Check field input requirements ( not empty and correct format).")
-                .message(methodArgumentNotValidException.getMessage())
+                .message(e.getMessage())
                 .path(httpServletRequest.getRequestURI()).build());
     }
 

@@ -1,6 +1,7 @@
 package com.basic.maisFitness.services;
 
 import com.basic.maisFitness.domain.Order;
+import com.basic.maisFitness.domain.OrderItem;
 import com.basic.maisFitness.mapper.OrderRelatedMappers;
 import com.basic.maisFitness.repositories.OrderRepository;
 import com.basic.maisFitness.requests.OrderPostRequestBody;
@@ -10,13 +11,20 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class OrderService {
 
     @Autowired
     private OrderRepository orderRepository;
+
+    @Autowired
+    private OrderItemService orderItemService;
 
     @Autowired
     private OrderRelatedMappers orderRelatedMappers;
@@ -30,6 +38,13 @@ public class OrderService {
         return orderRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("venda", id));
     }
 
+    public List<Order> findByDate(LocalDate localDate){
+        LocalDateTime start = localDate.atStartOfDay();
+        LocalDateTime end = localDate.atTime(LocalTime.MAX);
+
+        return orderRepository.findByRegistrationDateBetween(start,end);
+    }
+
     public List<Order> findAll(){
         return orderRepository.findAll();
 
@@ -38,6 +53,10 @@ public class OrderService {
     public void delete(Long id) {
 
         Order order = findById(id);
+
+        for(OrderItem orderItem : order.getOrderItems()){
+            orderItemService.delete(orderItem);
+        }
         try{
             orderRepository.delete(order);
         }catch(EmptyResultDataAccessException emptyResultDataAccessException){
@@ -46,13 +65,4 @@ public class OrderService {
 
     }
 
-    /*
-    @Transactional // VER EXCEPTION DEPOIS
-    public Order replace(OrderPutRequestBody OrderPutRequestBody) {
-        Order Order = OrderRelatedMappers.INSTANCE.toOrder(OrderPutRequestBody);
-        delete(Order.getId());
-        return OrderRepository.save(Order);
-    }
-
-     */
 }

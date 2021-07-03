@@ -2,10 +2,8 @@ package com.basic.maisFitness.domain;
 
 
 import com.basic.maisFitness.domain.pk.OrderItemPk;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 import javax.persistence.*;
 import java.util.Objects;
@@ -27,6 +25,7 @@ public class OrderItem {
         this.quantity = quantity;
     }
 
+    @JsonIgnore
     public Order getOrder(){
         return id.getOrder();
     }
@@ -56,11 +55,11 @@ public class OrderItem {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         OrderItem orderItem = (OrderItem) o;
-        return id.equals(orderItem.id) && quantity.equals(orderItem.quantity);
+        return id.equals(orderItem.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, quantity);
+        return Objects.hash(id);
     }
 }

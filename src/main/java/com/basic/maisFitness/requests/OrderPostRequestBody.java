@@ -18,6 +18,4 @@ public class OrderPostRequestBody{
     private BigDecimal value;
     private Long clientId;
     private Set<OrderItemPostRequestBody> orderItems = new HashSet<>();
-
-
 }

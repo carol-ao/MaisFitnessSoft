@@ -61,7 +61,7 @@ public class OrderRelatedMappers {
         // save order
         Order order = orderRepository.save(Order.builder().client(client)
                 .paymentMethod(orderPostRequestBody.getPaymentMethod())
-                .value(orderPostRequestBody.getValue()).build());
+                .value(orderPostRequestBody.getValue()).build()); // PASSAR PRA SERVICE POR CAUSA DE EXCEPTIONS
 
         // piece together orderItems
         Set<OrderItemPostRequestBody> orderItemPostRequestBodySet = orderPostRequestBody.getOrderItems();
@@ -71,7 +71,7 @@ public class OrderRelatedMappers {
             orderItems.add(new OrderItem(order, product, item.getQuantity()));
         }
         // save orderItems
-        for( OrderItem orderItem : orderItems){
+        for( OrderItem orderItem : orderItems){ //PASSAR PRA SERVICE POR CAUSA DE EXCEPTIONS
             orderItemRepository.save(orderItem);
         }
         // return order with all order items
@@ -81,4 +81,5 @@ public class OrderRelatedMappers {
                 .orderItems(orderItems)
                 .build();
     };
+
 }

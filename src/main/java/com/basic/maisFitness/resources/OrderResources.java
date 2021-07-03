@@ -6,10 +6,13 @@ import com.basic.maisFitness.mapper.OrderRelatedMappers;
 import com.basic.maisFitness.requests.OrderPostRequestBody;
 import com.basic.maisFitness.services.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -31,6 +34,11 @@ public class OrderResources {
         return ResponseEntity.ok().body(orderService.findById(id));
     }
 
+    @GetMapping(path = "/find")
+    ResponseEntity<List<Order>> findByDate( @RequestParam @DateTimeFormat(pattern = "dd.MM.yyyy") LocalDate registrationDate){
+        return ResponseEntity.ok().body(orderService.findByDate(registrationDate));
+    }
+
     @PostMapping
     ResponseEntity<Order> saveOrder(@RequestBody OrderPostRequestBody orderPostRequestBody){
         return new ResponseEntity<>(orderService.save(orderPostRequestBody),HttpStatus.CREATED);
@@ -42,8 +50,4 @@ public class OrderResources {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-//    @PutMapping
-//    public ResponseEntity<Order> replace(@RequestBody @Valid OrderPutRequestBody clientOrderRequestBody) {
-//        return new ResponseEntity<>(clientService.replace(orderPutRequestBody),HttpStatus.ACCEPTED);
-//    }
 }
