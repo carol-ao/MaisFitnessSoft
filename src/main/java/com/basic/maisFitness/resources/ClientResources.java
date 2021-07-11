@@ -43,9 +43,9 @@ public class ClientResources {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @PutMapping
-    public ResponseEntity<Client> replace(@RequestBody @Valid ClientPutRequestBody clientPutRequestBody) {
-        return new ResponseEntity<>(clientService.replace(clientPutRequestBody),HttpStatus.ACCEPTED);
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<Client> replace(@PathVariable long id, @RequestBody @Valid ClientPutRequestBody clientPutRequestBody) {
+        return new ResponseEntity<>(clientService.update(id, clientPutRequestBody),HttpStatus.ACCEPTED);
     }
 
 

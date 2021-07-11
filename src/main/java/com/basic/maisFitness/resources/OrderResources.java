@@ -2,11 +2,10 @@ package com.basic.maisFitness.resources;
 
 
 import com.basic.maisFitness.domain.Order;
-import com.basic.maisFitness.mapper.OrderRelatedMappers;
+import com.basic.maisFitness.mapper.Mappers;
 import com.basic.maisFitness.requests.OrderPostRequestBody;
 import com.basic.maisFitness.services.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,8 +20,8 @@ public class OrderResources {
 
     @Autowired
     OrderService orderService;
-    @Autowired
-    OrderRelatedMappers orderRelatedMappers;
+    @Autowired // mudar para colocar IoC pelo construtor
+    Mappers mappers;
 
     @GetMapping
     ResponseEntity<List<Order>> findAll(){
@@ -49,5 +48,6 @@ public class OrderResources {
         orderService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
 
 }

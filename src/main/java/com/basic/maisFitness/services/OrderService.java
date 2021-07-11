@@ -2,7 +2,7 @@ package com.basic.maisFitness.services;
 
 import com.basic.maisFitness.domain.Order;
 import com.basic.maisFitness.domain.OrderItem;
-import com.basic.maisFitness.mapper.OrderRelatedMappers;
+import com.basic.maisFitness.mapper.Mappers;
 import com.basic.maisFitness.repositories.OrderRepository;
 import com.basic.maisFitness.requests.OrderPostRequestBody;
 import com.basic.maisFitness.services.exceptions.ResourceNotFoundException;
@@ -15,7 +15,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
-import java.util.Set;
 
 @Service
 public class OrderService {
@@ -27,11 +26,11 @@ public class OrderService {
     private OrderItemService orderItemService;
 
     @Autowired
-    private OrderRelatedMappers orderRelatedMappers;
+    private Mappers mappers;
 
     @Transactional
     public Order save(OrderPostRequestBody orderPostRequestBody) {
-        return orderRepository.save(orderRelatedMappers.toOrder(orderPostRequestBody));
+        return orderRepository.save(mappers.toOrder(orderPostRequestBody));
     }
 
     public Order findById(long id){

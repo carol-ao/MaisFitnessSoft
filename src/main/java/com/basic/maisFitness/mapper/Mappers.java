@@ -1,15 +1,11 @@
 package com.basic.maisFitness.mapper;
 
-import com.basic.maisFitness.domain.Client;
-import com.basic.maisFitness.domain.Order;
-import com.basic.maisFitness.domain.OrderItem;
-import com.basic.maisFitness.domain.Product;
+import com.basic.maisFitness.domain.*;
 import com.basic.maisFitness.repositories.OrderItemRepository;
 import com.basic.maisFitness.repositories.OrderRepository;
 import com.basic.maisFitness.repositories.ProductRepository;
-import com.basic.maisFitness.requests.OrderItemPostRequestBody;
-import com.basic.maisFitness.requests.OrderPostRequestBody;
-import com.basic.maisFitness.requests.ProductPostRequestBody;
+import com.basic.maisFitness.repositories.WantedItemRepository;
+import com.basic.maisFitness.requests.*;
 import com.basic.maisFitness.services.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
@@ -22,7 +18,7 @@ import java.util.Set;
 import static org.springframework.data.domain.ExampleMatcher.GenericPropertyMatchers.ignoreCase;
 
 @Service
-public class OrderRelatedMappers {
+public class Mappers {
 
     @Autowired
     ClientService clientService;
@@ -32,6 +28,24 @@ public class OrderRelatedMappers {
     OrderRepository orderRepository;
     @Autowired
     OrderItemRepository orderItemRepository;
+    @Autowired
+    WantedItemRepository wantedItemRepository;
+
+    public Client toClient(ClientPostRequestBody clientPostRequestBody){
+        return Client.builder().name(clientPostRequestBody.getName())
+                .cpf(clientPostRequestBody.getCpf())
+                .bust(clientPostRequestBody.getBust())
+                .hips(clientPostRequestBody.getHips())
+                .build();
+    }
+
+    public WantedItem toWantedItem(WantedItemPostRequestBody wantedItemPostRequestBody){
+        Client client = clientService.findById(wantedItemPostRequestBody.getClientId());
+        return WantedItem.builder().type(wantedItemPostRequestBody.getType())
+                .brand(wantedItemPostRequestBody.getBrand())
+                .color(wantedItemPostRequestBody.getColor())
+                .client(client).build();
+    }
 
     public Product toProduct(ProductPostRequestBody productPostRequestBody){
         Product noIdProduct= Product.builder().brand(productPostRequestBody.getBrand())

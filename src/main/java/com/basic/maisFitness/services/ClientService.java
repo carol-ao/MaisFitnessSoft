@@ -2,7 +2,8 @@ package com.basic.maisFitness.services;
 
 
 import com.basic.maisFitness.domain.Client;
-import com.basic.maisFitness.mapper.ClientMappers;
+import com.basic.maisFitness.domain.WantedItem;
+import com.basic.maisFitness.mapper.Mappers;
 import com.basic.maisFitness.repositories.ClientRepository;
 import com.basic.maisFitness.requests.ClientPostRequestBody;
 import com.basic.maisFitness.requests.ClientPutRequestBody;
@@ -12,7 +13,6 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @Service
@@ -20,10 +20,16 @@ public class ClientService {
 
 @Autowired
     private ClientRepository clientRepository;
+@Autowired
+    private Mappers mappers;
+@Autowired
+    private WantedItemService wantedItemService;
+@Autowired
+    private OrderService orderService;
 
     @Transactional
     public Client save(ClientPostRequestBody clientPostRequestBody) {
-        return clientRepository.save(ClientMappers.INSTANCE.toClient(clientPostRequestBody));
+        return clientRepository.save(mappers.toClient(clientPostRequestBody));
     }
 
     public Client findById(long id){
@@ -37,6 +43,9 @@ public class ClientService {
     @Transactional
     public void delete(Long id) {
 
+        //TODO
+        //orderService.deleteByClient(id);
+        wantedItemService.deleteByClient(id);
         Client client = findById(id);
         try{
             clientRepository.delete(client);
@@ -46,10 +55,13 @@ public class ClientService {
 
     }
 
-    @Transactional // VER EXCEPTION DEPOIS
-    public Client replace(ClientPutRequestBody clientPutRequestBody) {
-        Client client = ClientMappers.INSTANCE.toClient(clientPutRequestBody);
-        delete(client.getId());
+    @Transactional
+    public Client update(long id, ClientPutRequestBody clientPutRequestBody) {
+        Client client = findById(id);
+        client.setName(clientPutRequestBody.getName());
+        client.setCpf(clientPutRequestBody.getCpf());
+        client.setBust(clientPutRequestBody.getBust());
+        client.setHips(clientPutRequestBody.getHips());
         return clientRepository.save(client);
     }
 }
