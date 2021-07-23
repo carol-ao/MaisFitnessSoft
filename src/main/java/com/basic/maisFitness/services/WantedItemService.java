@@ -7,6 +7,8 @@ import com.basic.maisFitness.repositories.WantedItemRepository;
 import com.basic.maisFitness.requests.WantedItemPostRequestBody;
 import com.basic.maisFitness.services.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,10 +24,6 @@ public class WantedItemService {
 
     @Autowired
     Mappers mappers;
-
-    public List<WantedItem> findAll(){
-        return wantedItemRepository.findAll();
-    }
 
     public WantedItem findById(long id){
         return wantedItemRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("wanted item",id));

@@ -2,7 +2,6 @@ package com.basic.maisFitness.services;
 
 
 import com.basic.maisFitness.domain.Client;
-import com.basic.maisFitness.domain.WantedItem;
 import com.basic.maisFitness.mapper.Mappers;
 import com.basic.maisFitness.repositories.ClientRepository;
 import com.basic.maisFitness.requests.ClientPostRequestBody;
@@ -10,10 +9,11 @@ import com.basic.maisFitness.requests.ClientPutRequestBody;
 import com.basic.maisFitness.services.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 
 @Service
 public class ClientService {
@@ -36,14 +36,12 @@ public class ClientService {
         return clientRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("cliente", id));
     }
 
-    public List<Client> findAll(){
-        return clientRepository.findAll();
-
+    public Page<Client> findAll(Pageable pageable){
+        return clientRepository.findAll(pageable);
     }
     @Transactional
     public void delete(Long id) {
-        //TODO
-        //orderService.deleteByClient(id);
+        orderService.deleteByClient(id);
         wantedItemService.deleteByClient(id);
         Client client = findById(id);
         try{
@@ -51,7 +49,6 @@ public class ClientService {
         }catch(EmptyResultDataAccessException emptyResultDataAccessException){
             throw new ResourceNotFoundException("cliente", id);
         }
-
     }
 
     @Transactional

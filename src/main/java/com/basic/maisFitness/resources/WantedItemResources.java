@@ -21,12 +21,7 @@ public class WantedItemResources {
         return new ResponseEntity<>(wantedItemService.save(wantedItemPostRequestBody), HttpStatus.CREATED);
     }
 
-    @GetMapping
-    public ResponseEntity<List<WantedItem>> findAll(){
-        return ResponseEntity.ok().body(wantedItemService.findAll());
-    }
-
-    @GetMapping(path = "/client_id/{clientId}")
+    @GetMapping(path = "/byclient/{clientId}")
     public ResponseEntity<List<WantedItem>> findByClientId(@PathVariable long clientId ){
         return ResponseEntity.ok().body(wantedItemService.findByClient(clientId));
     }

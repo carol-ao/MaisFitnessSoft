@@ -6,6 +6,8 @@ import com.basic.maisFitness.mapper.Mappers;
 import com.basic.maisFitness.requests.OrderPostRequestBody;
 import com.basic.maisFitness.services.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,8 +26,8 @@ public class OrderResources {
     Mappers mappers;
 
     @GetMapping
-    ResponseEntity<List<Order>> findAll(){
-        return ResponseEntity.ok().body(orderService.findAll());
+    ResponseEntity<Page<Order>> findAll(Pageable pageable){
+        return ResponseEntity.ok().body(orderService.findAll(pageable));
     }
 
     @GetMapping(path = "/{id}")
@@ -48,6 +50,5 @@ public class OrderResources {
         orderService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-
 
 }

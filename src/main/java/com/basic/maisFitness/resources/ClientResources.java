@@ -8,6 +8,8 @@ import com.basic.maisFitness.requests.ClientPostRequestBody;
 import com.basic.maisFitness.requests.ClientPutRequestBody;
 import com.basic.maisFitness.services.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,8 +30,8 @@ public class ClientResources {
         return new ResponseEntity<>(clientService.save(clientPostRequestBody), HttpStatus.CREATED);
 }
     @GetMapping
-    public ResponseEntity<List<Client>> findAll() {
-        return ResponseEntity.ok().body(clientService.findAll());
+    public ResponseEntity<Page<Client>> findAll(Pageable pageable) {
+        return ResponseEntity.ok().body(clientService.findAll(pageable));
     }
 
     @GetMapping(value = "/{id}")

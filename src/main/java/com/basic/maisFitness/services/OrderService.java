@@ -1,5 +1,6 @@
 package com.basic.maisFitness.services;
 
+import com.basic.maisFitness.domain.Client;
 import com.basic.maisFitness.domain.Order;
 import com.basic.maisFitness.domain.OrderItem;
 import com.basic.maisFitness.mapper.Mappers;
@@ -8,6 +9,8 @@ import com.basic.maisFitness.requests.OrderPostRequestBody;
 import com.basic.maisFitness.services.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,6 +27,9 @@ public class OrderService {
 
     @Autowired
     private OrderItemService orderItemService;
+
+    @Autowired
+    private ClientService clientService;
 
     @Autowired
     private Mappers mappers;
@@ -44,8 +50,13 @@ public class OrderService {
         return orderRepository.findByRegistrationDateBetween(start,end);
     }
 
-    public List<Order> findAll(){
-        return orderRepository.findAll();
+    public List<Order> findByClient(Long clientId){
+        Client client = clientService.findById(clientId);
+        return orderRepository.findByClient(client);
+    }
+
+    public Page<Order> findAll(Pageable pageable){
+        return orderRepository.findAll(pageable);
 
     }
     @Transactional
@@ -61,7 +72,12 @@ public class OrderService {
         }catch(EmptyResultDataAccessException emptyResultDataAccessException){
             throw new ResourceNotFoundException("venda", id);
         }
-
+    }
+    public void deleteByClient(Long clientId){
+        List<Order> orderList = findByClient(clientId);
+        for( Order order : orderList){
+            delete(order.getId());
+        }
     }
 
 }
