@@ -1,6 +1,5 @@
 package com.basic.maisFitness.resources;
 
-
 import com.basic.maisFitness.domain.Client;
 import com.basic.maisFitness.domain.WantedItem;
 import com.basic.maisFitness.requests.WantedItemPostRequestBody;
