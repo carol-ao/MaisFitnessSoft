@@ -42,7 +42,6 @@ public class ClientService {
     }
     @Transactional
     public void delete(Long id) {
-
         //TODO
         //orderService.deleteByClient(id);
         wantedItemService.deleteByClient(id);
